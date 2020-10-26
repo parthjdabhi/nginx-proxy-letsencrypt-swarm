@@ -1,0 +1,18 @@
+version: "3"
+services:
+  test-app:
+    image: nginxdemos/hello
+    deploy:
+      replicas: 1
+    ports:
+      - 8000:80
+    environment:
+      - VIRTUAL_HOST=test1.my.online
+      - LETSENCRYPT_HOST=test1.my.online
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    external:
+      name: webproxy
