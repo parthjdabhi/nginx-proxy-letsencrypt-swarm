@@ -14,9 +14,15 @@ export NGINX_TEMPLATE=/app/nginx.tmpl
 #  export NGINX_TEMPLATE=/app/nginx-proxy.tmpl
 #fi
 
+echo "\n ====> Start /app/nginx.tmpl ..."
+cat /app/nginx.tmpl
+
 cron -f &
 
 docker-gen -notify="nginx -s reload" $NGINX_TEMPLATE /etc/nginx/conf.d/default.conf
+
+echo "\n ====> Generated /etc/nginx/conf.d/default.conf ..."
+cat /etc/nginx/conf.d/default.conf
 
 /app/docker-entrypoint.sh
 

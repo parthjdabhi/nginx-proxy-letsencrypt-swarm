@@ -1,0 +1,39 @@
+version: '3.6'
+
+services:
+  nginx-proxy:
+    image: joeriv/nginx-proxy-letsencrypt-swarm
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # - S3FS_ENDPOINT=https://s3-accesspoint.eu-west-2.amazonaws.com
+      # - S3FS_ENDPOINT=https://s3.eu-west-2.amazonaws.com
+      # - S3FS_ENDPOINT=https://mso-swarm-data-017230587564.s3-accesspoint.eu-west-2.amazonaws.com/
+      - S3FS_ENDPOINT=https://s3.amazonaws.com
+      - S3FS_ACCESSKEY=''
+      - S3FS_SECRETKEY=''
+      - S3FS_BUCKET='mso-swarm-data'
+      - LETSENCRYPT_EMAIL=parthjdabhi@gmail.com
+    deploy:
+        placement:
+          constraints: [node.role == manager]
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    external: true
+    name: webproxy
+
+# networks:
+#   webproxy:
+#     external:
+#       name: webproxy
+
+# networks:
+#   webproxy:
+#     driver: overlay
+#     attachable: true

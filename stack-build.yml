@@ -1,0 +1,21 @@
+version: '3.6'
+
+services:
+  nginx-proxy:
+    # image: joeriv/nginx-proxy-letsencrypt-swarm
+    # image: swarm4_nginx-proxy:latest
+    build: ./
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - S3FS_ENDPOINT=https://s3.amazonaws.com
+      - S3FS_ACCESSKEY=<ACCESSKEY>
+      - S3FS_SECRETKEY=<SECRETKEY>
+      - S3FS_BUCKET=<BUCKETNAME>
+      - LETSENCRYPT_EMAIL=<LETSENCRYPTEMAIL>
+    deploy:
+        placement:
+          constraints: [node.role == manager]
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
